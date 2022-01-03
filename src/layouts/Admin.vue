@@ -1,5 +1,5 @@
 <template>
-  <div class="wr">
+  <div class="wr" v-if="isLogged">
     <v-navigation-drawer v-model="drawer" app>
       <AppSidebar />
     </v-navigation-drawer>
@@ -31,7 +31,12 @@ export default {
   components: {
     AppSidebar,
   },
-  data: () => ({ drawer: null })
+  data: () => ({ drawer: null }),
+  computed: {
+    isLogged() {
+      return this.$store.getters['user/user']
+    }
+  }
 }
 </script>
 
