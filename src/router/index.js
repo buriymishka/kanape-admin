@@ -11,6 +11,7 @@ const routes = [
   {
     path: '',
     component: AdminLayout,
+    redirect: { name: 'Orders' },
     children: [
       {
         path: 'orders',
@@ -43,6 +44,7 @@ const routes = [
     path: '',
     component: EntranceLayout,
     name: 'EntranceLayout',
+    redirect: { name: 'Login' },
     beforeEnter(to, from, next) {
       console.log(store.getters['user/user'])
       if (store.getters['user/user']){
