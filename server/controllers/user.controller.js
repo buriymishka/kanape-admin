@@ -15,7 +15,7 @@ module.exports.login = async (req, res) => {
       if (isPassCorrect) {
         const generatedRefreshToken = generateRefreshToken()
         await Token.create({ token: generatedRefreshToken, userId: user.id, expires: Date.now() + (1000 * 60 * 60 * 24 * 30)})
-        res.cookie('refreshToken', generatedRefreshToken, { maxAge: 2592000000, httpOnly: true, sameSite: 'None', path: '/', secure: true });
+        res.cookie('refreshToken', generatedRefreshToken, { maxAge: 2592000000, httpOnly: true });
         const generatedAccessToken = generateAccessToken({ id: user.id })
 
         res.json({ success: true, data: { name: user.name, email: user.email, accessToken: generatedAccessToken } })
@@ -31,6 +31,7 @@ module.exports.login = async (req, res) => {
 }
 
 module.exports.load = async (req, res) => {
+  return res.json({ success: true, data: req.headers.access_token })
   let token = getAccessTokenPayload(req.headers.access_token)
 
   try {
@@ -62,7 +63,7 @@ module.exports.registration = async (req, res) => {
 
     const generatedRefreshToken = generateRefreshToken()
     await Token.create({ token: generatedRefreshToken, userId: newUser.id, expires: Date.now() + (1000 * 60 * 60 * 24 * 30)})
-    res.cookie('refreshToken', generatedRefreshToken, { maxAge: 2592000000, httpOnly: true, sameSite: 'None', path: '/', secure: true });
+    res.cookie('refreshToken', generatedRefreshToken, { maxAge: 2592000000, httpOnly: true });
     const generatedAccessToken = generateAccessToken({ id: newUser.id })
 
     res.json({ success: true, data: { email: newUser.email, accessToken: generatedAccessToken } })

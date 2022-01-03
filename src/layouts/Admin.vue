@@ -6,7 +6,6 @@
 
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      UserName
       <v-spacer></v-spacer>
       <router-link to="/profile">
         <v-avatar color="primary" size="40" class="avatar">
