@@ -18,7 +18,7 @@ app.use(cookieParser());
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', IS_PROD ? 'http://kanapeadmin-env.eba-jbuz8m4h.us-east-2.elasticbeanstalk.com' : 'http://localhost:8080');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,access_token');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,accesstoken');
   res.setHeader('Access-Control-Allow-Credentials', true);
   next();
 });

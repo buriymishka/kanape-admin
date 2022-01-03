@@ -31,7 +31,7 @@ module.exports.login = async (req, res) => {
 }
 
 module.exports.load = async (req, res) => {
-  let token = getAccessTokenPayload(req.headers.access_token)
+  let token = getAccessTokenPayload(req.headers['accesstoken'])
 
   try {
     const user = await User.findById(token.id, ['email'])
@@ -76,7 +76,7 @@ module.exports.update = async (req, res) => {
   if (req.body.newPassword && req.body.newPassword?.length < 4) return res.status(400).json({ frontMessage: 'Пароль должен состоять минимум из 4 символов' })
   if (req.body.newPassword && req.body.newPassword?.includes(' ')) return res.status(400).json({ frontMessage: 'Пароль не может содержать пробелов' })
 
-  const token = getAccessTokenPayload(req.headers.access_token)
+  const token = getAccessTokenPayload(req.headers['accesstoken'])
   try {
     const userByEmail = await User.findOne({
       where: {

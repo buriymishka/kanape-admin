@@ -33,7 +33,7 @@ instance.interceptors.response.use(response => {
 export default instance
 
 function addAccessToken(request) {
-  request.headers.access_token = getAC()
+  request.headers['accesstoken'] = getAC()
 
   return request;
 }
