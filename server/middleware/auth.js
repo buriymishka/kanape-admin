@@ -1,7 +1,6 @@
 const { checkAccessToken } = require('../utils/tokens')
 
 module.exports = function(req, res, next) {
-  next()
   if (checkAccessToken(req.headers.access_token)) {
     next()
   } else {
