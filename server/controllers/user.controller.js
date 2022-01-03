@@ -31,7 +31,6 @@ module.exports.login = async (req, res) => {
 }
 
 module.exports.load = async (req, res) => {
-  return res.json({ success: true, data: req.headers.access_token })
   let token = getAccessTokenPayload(req.headers.access_token)
 
   try {
