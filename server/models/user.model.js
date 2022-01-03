@@ -11,10 +11,6 @@ User.init({
   password: {
     type: DataTypes.STRING,
     allowNull: false
-  },
-  status: {
-    type: DataTypes.STRING,
-    defaultValue: 'standard'
   }
 }, {
   sequelize: db,
