@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import EntranceLayout from '@/layouts/Entrance.vue'
 import AdminLayout from '@/layouts/Admin.vue'
 import store from '@/store'
+import * as userAPI from '@/api/user'
 
 Vue.use(VueRouter)
 
@@ -75,6 +76,17 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach(async (to, from, next) => {
+  if (!store.getters['loaded']) {
+    try {
+      const res = await userAPI.load()     
+      if (res.success) store.dispatch('user/setUser', res.data)
+    } catch (e) {}
+    store.dispatch('setLoaded', true)
+  }
+  next()
 })
 
 export default router
