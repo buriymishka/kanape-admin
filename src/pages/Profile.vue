@@ -106,6 +106,8 @@ export default {
             this.$store.dispatch('user/setUser', res.data)
             this.setupForm()
             this.$success('Сохранено')
+          } else {
+            this.$error()
           }
         } catch (e) {
           this.$error(e.frontMessage)

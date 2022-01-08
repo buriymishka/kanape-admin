@@ -6,14 +6,6 @@
 
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-spacer></v-spacer>
-      <router-link to="/profile">
-        <v-avatar color="primary" size="40" class="avatar">
-          <v-icon dark size="20">
-            mdi-account
-          </v-icon>
-        </v-avatar>
-      </router-link>
     </v-app-bar>
 
     <v-main>

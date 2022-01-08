@@ -92,8 +92,8 @@ module.exports.update = async (req, res) => {
       dataForUpdate.password = createPassword(req.body.newPassword)
     }
 
-    const newUser = await User.update(dataForUpdate, { where: { id: token.id }, returning: ['email'] })
-    res.json({ success: true, data: newUser?.[1]?.[0] })
+    const newUser = await User.update(dataForUpdate, { where: { id: token.id } })
+    res.json({ success: true, data: { email: req.body.email } })
   } catch (e) {
     res.status(500).json(e)
   }

@@ -19,14 +19,44 @@ const routes = [
         component: () => import('@/pages/orders/Index.vue')
       },
       {
+        path: 'orders/create',
+        name: 'OrdersCreate',
+        component: () => import('@/pages/orders/Create.vue')
+      },
+      {
+        path: 'orders/:id',
+        name: 'OrdersEdit',
+        component: () => import('@/pages/orders/Edit.vue')
+      },
+      {
         path: 'products',
         name: 'Products',
         component: () => import('@/pages/products/Index.vue')
       },
       {
+        path: 'products/create',
+        name: 'ProductsCreate',
+        component: () => import('@/pages/products/Create.vue')
+      },
+      {
+        path: 'products/:id',
+        name: 'ProductsEdit',
+        component: () => import('@/pages/products/Edit.vue')
+      },
+      {
         path: 'categories',
         name: 'Categories',
         component: () => import('@/pages/categories/Index.vue')
+      },
+      {
+        path: 'categories/create',
+        name: 'CategoriesCreate',
+        component: () => import('@/pages/categories/Create.vue')
+      },
+      {
+        path: 'categories/:id',
+        name: 'CategoriesEdit',
+        component: () => import('@/pages/categories/Edit.vue')
       },
       {
         path: 'info',
