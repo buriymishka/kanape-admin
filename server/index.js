@@ -1,12 +1,12 @@
+const dotenv = require('dotenv')
+dotenv.config()
+
 const express = require('express')
 const path = require('path');
 const fileupload = require("express-fileupload");
 const bodyParser = require('body-parser')
 const serveStatic = require('serve-static')
 const cookieParser = require('cookie-parser')
-
-const dotenv = require('dotenv')
-dotenv.config()
 
 const routerUser = require('./routes/user.route')
 const routerToken = require('./routes/token.route')
