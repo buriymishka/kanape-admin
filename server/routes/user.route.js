@@ -5,7 +5,7 @@ const router = new Router()
 
 router.post('/api/user/login', login)
 
-router.post('/api/user/registration', registration)
+// router.post('/api/user/registration', registration)
 
 router.post('/api/user/recover', recover)
 

@@ -25,6 +25,10 @@ Product.init({
     type: DataTypes.STRING(2048),
     defaultValue: ''
   },
+  imageAdditional: {
+    type: DataTypes.JSON,
+    defaultValue: []
+  },
   order: {
     type: DataTypes.BIGINT,
     defaultValue: 0

@@ -88,7 +88,7 @@
           </v-col>
           <v-col cols="12" md="4">
             <v-file-input
-              placeholder="Загрузите картинку (.png, .jpg)"
+              placeholder="Основная картинка (.png, .jpg)"
               prepend-icon="mdi-camera"
               v-model="image"
               accept="image/jpeg, image/png"
@@ -96,7 +96,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" md="6">
+          <v-col cols="12" md="4">
             <v-select
               :items="productStatuses"
               v-model="productStatusId"
@@ -105,7 +105,7 @@
               item-value="id"
             ></v-select>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col cols="12" md="4">
             <v-text-field
               v-model="order"
               name="asiojduhasfvb"
@@ -113,6 +113,15 @@
               hint="Порядок на сайте меню (оставьте пустым, чтобы поставить товар в конец)"
               label="Порядок"
             ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-file-input
+              placeholder="Дополнительные картинки (.png, .jpg)"
+              prepend-icon="mdi-camera"
+              v-model="imageAdditional"
+              accept="image/jpeg, image/png"
+              multiple
+            ></v-file-input>
           </v-col>
         </v-row>
         <v-btn
@@ -151,6 +160,7 @@ export default {
       categoryList: [],
       categoryId: null,
       image: null,
+      imageAdditional: null,
       productStatuses: [{ id: 'active', text: "Активнен" }, { id: 'inactive', text: "Неактивен" }],
       productStatusId: 'active',
     };
@@ -176,6 +186,12 @@ export default {
         fromData.append('price', this.price)
         if (this.image) fromData.append('image', this.image, this.image.name)
 
+        if (this.imageAdditional && this.imageAdditional.length) {
+          this.imageAdditional.forEach((file) => {
+            fromData.append('imageAdditional', file, file.name)
+          })
+        }
+
         try {
           const res = await productAPI.create(fromData)
           if (res.success) {
@@ -195,7 +211,7 @@ export default {
   },
   async mounted() {
     try {
-      const res = await categoryAPI.load()
+      const res = await categoryAPI.load({ orderBy: 'title_ru', orderSort: 'ASC' })
       if (res.success) {
         this.categoryList = res.data
       }

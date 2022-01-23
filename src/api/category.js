@@ -1,7 +1,7 @@
 import server from '@/helpers/http'
 
-export async function load() {
-  return await server.get('category')
+export async function load(params) {
+  return await server.get('category', { params })
 }
 
 export async function loadById(id) {

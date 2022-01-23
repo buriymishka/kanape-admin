@@ -4,7 +4,7 @@ const minifyImage = require('./minifyImage')
 const fs = require('fs')
 
 module.exports = async function uploadImage(img) {
-  const filename = `${moment().format('DDMMYYYY-HHmmss_SSS')}${path.extname(img.name)}`
+  const filename = `${moment().format('DDMMYYYY-HHmmss_SSS')}_${img.md5}${path.extname(img.name)}`
   const tempPath = path.resolve(__dirname, '../temp/', filename)
   const fullPath = path.resolve(__dirname, '../uploads/', filename)
   await img.mv(tempPath)

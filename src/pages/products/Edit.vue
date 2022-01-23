@@ -95,7 +95,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" md="6">
+          <v-col cols="12" md="4">
             <v-select
               :items="productStatuses"
               v-model="productStatusId"
@@ -104,7 +104,7 @@
               item-value="id"
             ></v-select>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col cols="12" md="4">
             <v-text-field
               v-model="order"
               name="asiojduhasfvb"
@@ -113,8 +113,41 @@
               label="Порядок"
             ></v-text-field>
           </v-col>
+          <v-col cols="12" md="4">
+            <v-file-input
+              placeholder="Дополнительные картинки (.png, .jpg)"
+              prepend-icon="mdi-camera"
+              v-model="imageAdditional"
+              accept="image/jpeg, image/png"
+              :hint="currentImageAdditional && currentImageAdditional.length ? 'Картинки будут добавлены к уже имеющимся' : ''"
+              persistent-hint
+              multiple
+            ></v-file-input>
+          </v-col>
         </v-row>
-        <v-img v-if="currentImage" :src="currentImage" max-height="300" max-width="300" />
+        <v-row>
+          <v-col cols="12" md="3">
+            <h3>Основная картинка</h3>
+            <img v-if="currentImage" :src="currentImage" class="product-image" />
+          </v-col>
+          <v-col v-if="currentImageAdditional && currentImageAdditional.length" cols="12" md="9">
+            <h3>Дополнительные картинки</h3>
+            <v-row>
+              <v-col cols="6" md="3" v-for="(imgAdd, index) in currentImageAdditional" :key="index">
+                <div class="product-image">
+                  <v-btn
+                    @click="toggleDeleteImageAdditional(imgAdd)"
+                    :color="imageAdditionalDelete.includes(imgAdd) ? 'primary' : 'error'"
+                    class="product-image-delete"
+                  >
+                    {{ imageAdditionalDelete.includes(imgAdd) ? 'Отменить удаление' : 'Удалить' }}
+                  </v-btn>
+                  <img :src="imgAdd" :class="{ 'will-be-deleted': imageAdditionalDelete.includes(imgAdd) }" />
+                </div>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
         <v-btn
           type="submit"
           color="primary"
@@ -151,6 +184,8 @@ export default {
       categoryId: null,
       select: null,
       image: null,
+      imageAdditional: null,
+      imageAdditionalDelete: [],
       currentImage: null,
       order: "",
       ingredients: { ru: [], lv: [], en: [] },
@@ -159,6 +194,13 @@ export default {
     };
   },
   methods: {
+    toggleDeleteImageAdditional(img) {
+      if (this.imageAdditionalDelete.includes(img)) {
+        this.imageAdditionalDelete = this.imageAdditionalDelete.filter(el => el !== img)
+      } else {
+        this.imageAdditionalDelete.push(img)
+      }
+    },
     async formHandler() {
       if (this.$refs.form.validate()) {
         this.btnLoading = true
@@ -177,7 +219,14 @@ export default {
         fromData.append('status', this.productStatusId)
         fromData.append('categoryId', this.categoryId || 0)
         fromData.append('price', this.price)
+        fromData.append('imageAdditionalDelete', JSON.stringify(this.imageAdditionalDelete))
         if (this.image) fromData.append('image', this.image, this.image.name)
+
+        if (this.imageAdditional && this.imageAdditional.length) {
+          this.imageAdditional.forEach((file) => {
+            fromData.append('imageAdditional', file, file.name)
+          })
+        }
 
         try {
           const res = await productAPI.update(this.$route.params.id, fromData)
@@ -210,10 +259,11 @@ export default {
         this.price = res.data.price
         this.order = res.data.order ?? null
         this.currentImage = res.data.image
+        this.currentImageAdditional = res.data.imageAdditional
       } else {
         this.$error()
       }
-      const resCat = await categoryAPI.load()
+      const resCat = await categoryAPI.load({ orderBy: 'title_ru', orderSort: 'ASC' })
       if (resCat.success) {
         this.categoryList = resCat.data
       } else {
@@ -226,3 +276,19 @@ export default {
   },
 };
 </script>
+
+<style lang="sass">
+img
+  max-width: 300px
+  max-height: 300px
+  transition: opacity .25s ease
+.product-image
+  position: relative
+  &-delete
+    position: absolute
+    z-index: 2
+    top: 0
+    left: 0
+.will-be-deleted
+  opacity: 0.5
+</style>

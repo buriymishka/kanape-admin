@@ -5,7 +5,8 @@ const Category = require('../models/category.model')
 
 module.exports.load = async (req, res) => {
   try {
-    const categories = await Category.findAll({ order: [['createdAt', 'DESC']] })
+    console.log(req.query)
+    const categories = await Category.findAll({ order: [[req.query.orderBy || 'createdAt', req.query.orderSort || 'DESC']] })
     const host = `${req.protocol}://${req.headers.host}`
     categories.forEach(category => {
       category.image = category.image ? `${host}/uploads/${category.image}` : `${host}/uploads/default-category-image.jpg`
@@ -53,7 +54,9 @@ module.exports.update = async (req, res) => {
     if (category) {
       if (req.files && req.files.image) {
         if (category.image) {
-          fs.unlinkSync(path.resolve(__dirname, '../uploads/', category.image))
+          try {
+            fs.unlinkSync(path.resolve(__dirname, '../uploads/', category.image))
+          } catch (e) {} 
         }
         updateObj.image = await uploadImage(req.files.image)
       }
@@ -73,7 +76,9 @@ module.exports.remove = async (req, res) => {
     const category = await Category.findOne({ where: { id: req.params.id || null } })
     if (category) {
       if (category.image) {
-        fs.unlinkSync(path.resolve(__dirname, '../uploads/', category.image))
+        try {
+          fs.unlinkSync(path.resolve(__dirname, '../uploads/', category.image))
+        } catch (e) {} 
       }
       const result = await Category.destroy({ where: { id: req.params.id || null } })
       result ? res.json({ success: true }) : res.json({ success: false })
